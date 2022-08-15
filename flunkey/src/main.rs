@@ -1,7 +1,7 @@
 use common::error::ButlerError;
+use common::member::FlunkeyType;
 use flunkey::flunkey::config::Config;
 use flunkey::flunkey::FlunkeyApp;
-use common::member::FlunkeyType;
 
 fn main() -> Result<(), ButlerError> {
     let config = Config::load(FlunkeyType)?;

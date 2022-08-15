@@ -5,8 +5,8 @@ use std::{
 
 use configparser::ini::Ini;
 
-use common::member::ConfigResolver;
 use crate::ButlerResult;
+use common::member::ConfigResolver;
 
 pub struct Config {
     pub addr: SocketAddrV4,
@@ -37,10 +37,6 @@ impl Config {
         };
         let butler_addr = SocketAddrV4::new(butler_host, butler_port);
 
-        Ok(Config {
-            addr,
-            butler_addr,
-        })
+        Ok(Config { addr, butler_addr })
     }
 }
-

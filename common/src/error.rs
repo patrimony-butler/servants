@@ -50,4 +50,3 @@ impl From<ParseIntError> for ButlerError {
         ButlerError::ParseIntError(err)
     }
 }
-

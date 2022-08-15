@@ -19,4 +19,3 @@ impl ConfigResolver for FlunkeyType {
 }
 
 type ConfigName = String;
-

@@ -1,7 +1,7 @@
-use butler::error::ButlerError;
 use butler::butler::config::Config;
 use butler::butler::ButlerApp;
-use butler::member::ButlerType;
+use common::error::ButlerError;
+use common::member::ButlerType;
 
 fn main() -> Result<(), ButlerError> {
     let config = Config::load(ButlerType)?;
@@ -10,4 +10,3 @@ fn main() -> Result<(), ButlerError> {
 
     Ok(())
 }
-

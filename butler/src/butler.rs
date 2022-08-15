@@ -2,7 +2,7 @@ use std::io::{Read, Write};
 use std::net::{SocketAddrV4, TcpListener, TcpStream};
 use std::thread;
 
-use crate::error::ButlerError;
+use common::error::ButlerError;
 
 pub mod config;
 
@@ -55,4 +55,3 @@ fn handle_client(mut stream: TcpStream) -> Result<(), ButlerError> {
     } {}
     Ok(())
 }
-

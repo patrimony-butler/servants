@@ -5,8 +5,8 @@ use std::{
 
 use configparser::ini::Ini;
 
-use crate::member::ConfigResolver;
 use crate::ButlerResult;
+use common::member::ConfigResolver;
 
 pub struct Config {
     pub addr: SocketAddrV4,
@@ -28,4 +28,3 @@ impl Config {
         Ok(Config { addr })
     }
 }
-
