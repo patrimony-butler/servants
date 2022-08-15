@@ -2,7 +2,7 @@ use std::io::{Read, Write};
 use std::net::{SocketAddrV4, TcpStream};
 use std::str::from_utf8;
 
-use crate::error::ButlerError;
+use common::error::ButlerError;
 
 pub mod config;
 

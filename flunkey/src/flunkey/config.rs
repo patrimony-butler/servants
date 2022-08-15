@@ -5,7 +5,7 @@ use std::{
 
 use configparser::ini::Ini;
 
-use crate::member::ConfigResolver;
+use common::member::ConfigResolver;
 use crate::ButlerResult;
 
 pub struct Config {
