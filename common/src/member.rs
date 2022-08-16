@@ -1,21 +1,9 @@
-pub struct ButlerType;
-
-pub struct FlunkeyType;
+use crate::error::ButlerError;
 
 pub trait ConfigResolver {
     fn get_config_name(&self) -> ConfigName;
 }
 
-impl ConfigResolver for ButlerType {
-    fn get_config_name(&self) -> ConfigName {
-        "butler.conf".to_string()
-    }
-}
+pub type ConfigName = String;
 
-impl ConfigResolver for FlunkeyType {
-    fn get_config_name(&self) -> ConfigName {
-        "flunkey.conf".to_string()
-    }
-}
-
-type ConfigName = String;
+pub type ButlerResult<T> = std::result::Result<T, ButlerError>;

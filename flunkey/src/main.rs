@@ -1,5 +1,6 @@
+use common::config::ConfigReader;
 use common::error::ButlerError;
-use common::member::FlunkeyType;
+use flunkey::config::FlunkeyType;
 use flunkey::flunkey::config::Config;
 use flunkey::flunkey::FlunkeyApp;
 

@@ -5,16 +5,16 @@ use std::{
 
 use configparser::ini::Ini;
 
-use crate::ButlerResult;
-use common::member::ConfigResolver;
+use common::config::ConfigReader;
+use common::member::{ButlerResult, ConfigResolver};
 
 pub struct Config {
     pub addr: SocketAddrV4,
     pub butler_addr: SocketAddrV4,
 }
 
-impl Config {
-    pub fn load(member_type: impl ConfigResolver) -> ButlerResult<Self> {
+impl ConfigReader for Config {
+    fn load(member_type: impl ConfigResolver) -> ButlerResult<Box<Config>> {
         let mut config = Ini::new();
         let _map = config.load(member_type.get_config_name())?;
         let port = match config.getuint("default", "port")? {
@@ -37,6 +37,6 @@ impl Config {
         };
         let butler_addr = SocketAddrV4::new(butler_host, butler_port);
 
-        Ok(Config { addr, butler_addr })
+        Ok(Box::new(Config { addr, butler_addr }))
     }
 }
