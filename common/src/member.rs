@@ -1,6 +1,7 @@
 use crate::error::ButlerError;
 
 pub trait ConfigResolver {
+    fn new(config_name: ConfigName) -> Self;
     fn get_config_name(&self) -> ConfigName;
 }
 

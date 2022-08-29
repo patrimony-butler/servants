@@ -1,13 +1,12 @@
-use common::member::ConfigName;
-use common::member::ConfigResolver;
+use common::member::{ConfigName, ConfigResolver};
 
-pub struct ButlerType {
+pub struct ButlerCliType {
     config_name: ConfigName,
 }
 
-impl ConfigResolver for ButlerType {
+impl ConfigResolver for ButlerCliType {
     fn new(config_name: ConfigName) -> Self {
-        ButlerType { config_name }
+        ButlerCliType { config_name }
     }
 
     fn get_config_name(&self) -> ConfigName {

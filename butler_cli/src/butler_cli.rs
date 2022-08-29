@@ -6,16 +6,17 @@ use common::error::ButlerError;
 
 pub mod config;
 
-pub struct FlunkeyApp {
+pub struct ButlerCliApp {
     addr: SocketAddrV4,
 }
 
-impl FlunkeyApp {
+impl ButlerCliApp {
     pub fn new(addr: SocketAddrV4) -> Self {
-        FlunkeyApp { addr }
+        ButlerCliApp { addr }
     }
 
     pub fn run(&self) -> Result<(), ButlerError> {
+        println!("{:?}", self.addr);
         match TcpStream::connect(self.addr) {
             Ok(mut stream) => {
                 println!(
@@ -23,12 +24,12 @@ impl FlunkeyApp {
                     self.addr.port()
                 );
 
-                let msg = b"Hello!";
+                let msg = b"Hello from cli!";
 
                 stream.write(msg).unwrap();
-                println!("Sent Hello, awaiting reply...");
+                println!("Sent Hello from cli!, awaiting reply...");
 
-                let mut data = [0_u8; 6];
+                let mut data = [0_u8; 15];
                 match stream.read_exact(&mut data) {
                     Ok(_) => {
                         if &data == msg {

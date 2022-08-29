@@ -11,6 +11,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "butler_cli"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "configparser",
+]
+
+[[package]]
 name = "common"
 version = "0.1.0"
 dependencies = [
