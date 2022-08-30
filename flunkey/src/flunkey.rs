@@ -3,7 +3,7 @@ use std::net::{SocketAddrV4, TcpStream};
 use std::str::from_utf8;
 
 use common::app::ServantApp;
-use common::error::ButlerError;
+use common::error::ServantError;
 
 pub mod config;
 
@@ -16,7 +16,7 @@ impl ServantApp for FlunkeyApp {
         FlunkeyApp { addr }
     }
 
-    fn run(&self) -> Result<(), ButlerError> {
+    fn run(&self) -> Result<(), ServantError> {
         match TcpStream::connect(self.addr) {
             Ok(mut stream) => {
                 println!(

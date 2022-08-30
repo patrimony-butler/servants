@@ -6,7 +6,7 @@ use std::{
 use configparser::ini::Ini;
 
 use common::config::ConfigReader;
-use common::member::{ButlerResult, ConfigName};
+use common::member::{ConfigName, ServantResult};
 
 pub struct Config {
     pub addr: SocketAddrV4,
@@ -14,7 +14,7 @@ pub struct Config {
 }
 
 impl ConfigReader for Config {
-    fn load(config_name: ConfigName) -> ButlerResult<Box<Config>> {
+    fn load(config_name: ConfigName) -> ServantResult<Box<Config>> {
         let mut config = Ini::new();
         let _map = config.load(config_name)?;
         let port = match config.getuint("default", "port")? {
