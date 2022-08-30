@@ -1,3 +1,4 @@
+use common::app::ServantApp;
 use common::config::ConfigReader;
 use common::error::ButlerError;
 use flunkey::flunkey::config::Config;
