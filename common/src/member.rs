@@ -1,5 +1,5 @@
-use crate::error::ButlerError;
+use crate::error::ServantError;
 
 pub type ConfigName = String;
 
-pub type ButlerResult<T> = std::result::Result<T, ButlerError>;
+pub type ServantResult<T> = std::result::Result<T, ServantError>;

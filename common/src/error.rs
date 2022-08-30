@@ -3,14 +3,14 @@ use std::net::AddrParseError;
 use std::num::ParseIntError;
 
 #[derive(Debug)]
-pub enum ButlerError {
+pub enum ServantError {
     ConfigError(String),
     Error(std::io::Error),
     AddrParseError(AddrParseError),
     ParseIntError(ParseIntError),
 }
 
-impl fmt::Display for ButlerError {
+impl fmt::Display for ServantError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "Butler error!")
     }
@@ -27,26 +27,26 @@ impl fmt::Display for ConfigError {
     }
 }
 
-impl From<std::io::Error> for ButlerError {
+impl From<std::io::Error> for ServantError {
     fn from(err: std::io::Error) -> Self {
-        ButlerError::Error(err)
+        ServantError::Error(err)
     }
 }
 
-impl From<String> for ButlerError {
+impl From<String> for ServantError {
     fn from(err: String) -> Self {
-        ButlerError::ConfigError(err)
+        ServantError::ConfigError(err)
     }
 }
 
-impl From<AddrParseError> for ButlerError {
+impl From<AddrParseError> for ServantError {
     fn from(err: AddrParseError) -> Self {
-        ButlerError::AddrParseError(err)
+        ServantError::AddrParseError(err)
     }
 }
 
-impl From<ParseIntError> for ButlerError {
+impl From<ParseIntError> for ServantError {
     fn from(err: ParseIntError) -> Self {
-        ButlerError::ParseIntError(err)
+        ServantError::ParseIntError(err)
     }
 }
