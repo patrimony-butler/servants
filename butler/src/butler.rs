@@ -2,6 +2,7 @@ use std::io::{Read, Write};
 use std::net::{SocketAddrV4, TcpListener, TcpStream};
 use std::thread;
 
+use common::app::ServantApp;
 use common::error::ButlerError;
 
 pub mod config;
@@ -10,12 +11,12 @@ pub struct ButlerApp {
     addr: SocketAddrV4,
 }
 
-impl ButlerApp {
-    pub fn new(addr: SocketAddrV4) -> Self {
+impl ServantApp for ButlerApp {
+    fn new(addr: SocketAddrV4) -> Self {
         ButlerApp { addr }
     }
 
-    pub fn run(&self) -> Result<(), ButlerError> {
+    fn run(&self) -> Result<(), ButlerError> {
         let listener = TcpListener::bind(self.addr)?;
 
         println!("Butler listening on port {}", self.addr.port());

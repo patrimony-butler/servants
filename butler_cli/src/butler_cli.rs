@@ -2,6 +2,7 @@ use std::io::{Read, Write};
 use std::net::{SocketAddrV4, TcpStream};
 use std::str::from_utf8;
 
+use common::app::ServantApp;
 use common::error::ButlerError;
 
 pub mod config;
@@ -10,12 +11,12 @@ pub struct ButlerCliApp {
     addr: SocketAddrV4,
 }
 
-impl ButlerCliApp {
-    pub fn new(addr: SocketAddrV4) -> Self {
+impl ServantApp for ButlerCliApp {
+    fn new(addr: SocketAddrV4) -> Self {
         ButlerCliApp { addr }
     }
 
-    pub fn run(&self) -> Result<(), ButlerError> {
+    fn run(&self) -> Result<(), ButlerError> {
         println!("{:?}", self.addr);
         match TcpStream::connect(self.addr) {
             Ok(mut stream) => {

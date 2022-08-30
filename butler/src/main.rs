@@ -1,5 +1,6 @@
 use butler::butler::config::Config;
 use butler::butler::ButlerApp;
+use common::app::ServantApp;
 use common::config::ConfigReader;
 use common::error::ButlerError;
 

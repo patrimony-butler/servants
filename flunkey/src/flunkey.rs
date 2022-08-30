@@ -2,6 +2,7 @@ use std::io::{Read, Write};
 use std::net::{SocketAddrV4, TcpStream};
 use std::str::from_utf8;
 
+use common::app::ServantApp;
 use common::error::ButlerError;
 
 pub mod config;
@@ -10,12 +11,12 @@ pub struct FlunkeyApp {
     addr: SocketAddrV4,
 }
 
-impl FlunkeyApp {
-    pub fn new(addr: SocketAddrV4) -> Self {
+impl ServantApp for FlunkeyApp {
+    fn new(addr: SocketAddrV4) -> Self {
         FlunkeyApp { addr }
     }
 
-    pub fn run(&self) -> Result<(), ButlerError> {
+    fn run(&self) -> Result<(), ButlerError> {
         match TcpStream::connect(self.addr) {
             Ok(mut stream) => {
                 println!(
