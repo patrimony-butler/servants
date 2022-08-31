@@ -3,7 +3,7 @@ use std::net::{SocketAddrV4, TcpStream};
 use std::str::from_utf8;
 
 use common::app::ServantApp;
-use common::error::ServantError;
+use common::app::ServantResult;
 
 pub mod config;
 
@@ -16,7 +16,7 @@ impl ServantApp for ButlerCliApp {
         ButlerCliApp { addr }
     }
 
-    fn run(&self) -> Result<(), ServantError> {
+    fn run(&self) -> ServantResult<()> {
         println!("{:?}", self.addr);
         match TcpStream::connect(self.addr) {
             Ok(mut stream) => {

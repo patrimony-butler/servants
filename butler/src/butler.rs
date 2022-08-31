@@ -3,7 +3,7 @@ use std::net::{SocketAddrV4, TcpListener, TcpStream};
 use std::thread;
 
 use common::app::ServantApp;
-use common::error::ServantError;
+use common::app::ServantResult;
 
 pub mod config;
 
@@ -16,7 +16,7 @@ impl ServantApp for ButlerApp {
         ButlerApp { addr }
     }
 
-    fn run(&self) -> Result<(), ServantError> {
+    fn run(&self) -> ServantResult<()> {
         let listener = TcpListener::bind(self.addr)?;
 
         println!("Butler listening on port {}", self.addr.port());
@@ -38,7 +38,7 @@ impl ServantApp for ButlerApp {
     }
 }
 
-fn handle_client(mut stream: TcpStream) -> Result<(), ServantError> {
+fn handle_client(mut stream: TcpStream) -> ServantResult<()> {
     let mut data = [0_u8; 500];
 
     while match stream.read(&mut data) {
