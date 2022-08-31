@@ -5,8 +5,8 @@ use std::{
 
 use configparser::ini::Ini;
 
+use common::app::{ConfigName, ServantResult};
 use common::config::ConfigReader;
-use common::member::{ConfigName, ServantResult};
 
 pub struct Config {
     pub addr: SocketAddrV4,
