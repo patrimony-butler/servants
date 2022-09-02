@@ -4,8 +4,8 @@ use configparser::ini::Ini;
 
 use common::app::{ConfigName, ServantResult};
 use common::config::{
-    ConfigLoader, ConfigReader, DEFAULT_BUTLER_HOST, DEFAULT_BUTLER_PORT, DEFAULT_FLUNKEY_HOST,
-    DEFAULT_FLUNKEY_PORT,
+    ConfigLoader, ConfigReader, DEFAULT_BUTLER_HOST, DEFAULT_BUTLER_PORT,
+    DEFAULT_CONFIG_SECTION_NAME, DEFAULT_FLUNKEY_HOST, DEFAULT_FLUNKEY_PORT,
 };
 
 pub struct ConfigData {
@@ -18,14 +18,32 @@ impl ConfigLoader for ConfigData {
         let mut config = Ini::new();
         let _map = config.load(config_name)?;
 
-        let port = ConfigReader::read_port(&config, "default", "port", DEFAULT_FLUNKEY_PORT)?;
-        let host = ConfigReader::read_host(&config, "default", "host", DEFAULT_FLUNKEY_HOST)?;
+        let port = ConfigReader::read_port(
+            &config,
+            DEFAULT_CONFIG_SECTION_NAME,
+            "port",
+            DEFAULT_FLUNKEY_PORT,
+        )?;
+        let host = ConfigReader::read_host(
+            &config,
+            DEFAULT_CONFIG_SECTION_NAME,
+            "host",
+            DEFAULT_FLUNKEY_HOST,
+        )?;
         let addr = SocketAddrV4::new(host, port);
 
-        let butler_port =
-            ConfigReader::read_port(&config, "default", "butler_port", DEFAULT_BUTLER_PORT)?;
-        let butler_host =
-            ConfigReader::read_host(&config, "default", "butler_host", DEFAULT_BUTLER_HOST)?;
+        let butler_port = ConfigReader::read_port(
+            &config,
+            DEFAULT_CONFIG_SECTION_NAME,
+            "butler_port",
+            DEFAULT_BUTLER_PORT,
+        )?;
+        let butler_host = ConfigReader::read_host(
+            &config,
+            DEFAULT_CONFIG_SECTION_NAME,
+            "butler_host",
+            DEFAULT_BUTLER_HOST,
+        )?;
         let butler_addr = SocketAddrV4::new(butler_host, butler_port);
 
         Ok(Box::new(ConfigData { addr, butler_addr }))

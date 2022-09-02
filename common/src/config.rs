@@ -8,6 +8,7 @@ pub const DEFAULT_BUTLER_PORT: u16 = 6000;
 pub const DEFAULT_BUTLER_HOST: &str = "0.0.0.0";
 pub const DEFAULT_FLUNKEY_PORT: u16 = 6100_u16;
 pub const DEFAULT_FLUNKEY_HOST: &str = "0.0.0.0";
+pub const DEFAULT_CONFIG_SECTION_NAME: &str = "default";
 
 pub trait ConfigLoader {
     fn load(member_type: ConfigName) -> ServantResult<Box<Self>>;
