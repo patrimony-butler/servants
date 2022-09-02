@@ -43,8 +43,13 @@ fn handle_client(mut stream: TcpStream) -> ServantResult<()> {
 
     while match stream.read(&mut data) {
         Ok(size) => {
-            stream.write(&data[0..size])?;
-            true
+            let write_size = stream.write(&data[0..size])?;
+            if write_size == size {
+                true
+            } else {
+                println!("An error occured when response is sent");
+                false
+            }
         }
         Err(_) => {
             println!(
