@@ -1,3 +1,4 @@
+use std::env;
 use std::io::{Read, Write};
 use std::net::{SocketAddrV4, TcpStream};
 use std::str::from_utf8;
@@ -17,7 +18,9 @@ impl ServantApp for ButlerCliApp {
     }
 
     fn run(&self) -> ServantResult<()> {
-        println!("{:?}", self.addr);
+        let args = self.read_args();
+        let message = self.process_args(args);
+
         match TcpStream::connect(self.addr) {
             Ok(mut stream) => {
                 println!(
@@ -25,20 +28,12 @@ impl ServantApp for ButlerCliApp {
                     self.addr.port()
                 );
 
-                let msg = b"Hello from cli!";
+                stream.write(message.as_bytes()).unwrap();
 
-                stream.write(msg).unwrap();
-                println!("Sent Hello from cli!, awaiting reply...");
-
-                let mut data = [0_u8; 15];
-                match stream.read_exact(&mut data) {
-                    Ok(_) => {
-                        if &data == msg {
-                            println!("Reply is ok!");
-                        } else {
-                            let text = from_utf8(&data).unwrap();
-                            println!("Unexpected reply: {}", text);
-                        }
+                let mut data = [0_u8; 500];
+                match stream.read(&mut data) {
+                    Ok(size) => {
+                        println!("Received: {}", from_utf8(&data[0..size]).unwrap());
                     }
                     Err(e) => {
                         println!("Failed to receive data: {}", e);
@@ -51,5 +46,41 @@ impl ServantApp for ButlerCliApp {
         }
         println!("Terminated");
         Ok(())
+    }
+}
+
+impl ButlerCliApp {
+    fn read_args(&self) -> CLIArgs {
+        let args: Vec<String> = env::args().collect();
+        let args = CLIArgs::new(args);
+        println!("{:?}", args);
+        args
+    }
+
+    fn process_args(&self, args: CLIArgs) -> String {
+        match &args.command[..] {
+            "version" => "version".to_owned(),
+            _ => "wrong command".to_owned(),
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct CLIArgs {
+    pub program: String,
+    pub command: String,
+    pub arguments: Vec<String>,
+}
+
+impl CLIArgs {
+    fn new(args: Vec<String>) -> Self {
+        let program = (&args[0]).to_string();
+        let command = (&args[1]).to_string();
+        let arguments = (&args[2..]).to_vec();
+        CLIArgs {
+            program,
+            command,
+            arguments,
+        }
     }
 }

@@ -1,5 +1,6 @@
 use std::io::{Read, Write};
 use std::net::{SocketAddrV4, TcpListener, TcpStream};
+use std::str;
 use std::thread;
 
 use common::app::ServantApp;
@@ -43,13 +44,19 @@ fn handle_client(mut stream: TcpStream) -> ServantResult<()> {
 
     while match stream.read(&mut data) {
         Ok(size) => {
-            let write_size = stream.write(&data[0..size])?;
-            if write_size == size {
-                true
-            } else {
-                println!("An error occured when response is sent");
-                false
+            if size > 0 {
+                println!("Received: '{}'", str::from_utf8(&data[0..size]).unwrap());
+                let data = str::from_utf8(&data[0..size]).unwrap();
+                let message =
+                if data == "version" {
+                    "1.0"
+                } else {
+                    data
+                };
+                println!("Sent: {}", message);
+                let _write_size = stream.write(message.as_bytes())?;
             }
+            true
         }
         Err(_) => {
             println!(
