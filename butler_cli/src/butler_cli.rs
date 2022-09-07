@@ -1,8 +1,9 @@
 use std::env;
-use std::io::{Read, Write};
+use std::io::Read;
 use std::net::{SocketAddrV4, TcpStream};
 use std::str::from_utf8;
 
+use crate::commands::{Command, Version};
 use common::app::ServantApp;
 use common::app::ServantResult;
 
@@ -10,16 +11,20 @@ pub mod config;
 
 pub struct ButlerCliApp {
     addr: SocketAddrV4,
+    command: Option<Box<dyn Command>>,
 }
 
 impl ServantApp for ButlerCliApp {
     fn new(addr: SocketAddrV4) -> Self {
-        ButlerCliApp { addr }
+        ButlerCliApp {
+            addr,
+            command: None,
+        }
     }
 
-    fn run(&self) -> ServantResult<()> {
+    fn run(&mut self) -> ServantResult<()> {
         let args = self.read_args();
-        let message = self.process_args(args);
+        self.command = self.process_args(args);
 
         match TcpStream::connect(self.addr) {
             Ok(mut stream) => {
@@ -28,7 +33,7 @@ impl ServantApp for ButlerCliApp {
                     self.addr.port()
                 );
 
-                stream.write(message.as_bytes()).unwrap();
+                self.command.as_ref().unwrap().execute(&mut stream);
 
                 let mut data = [0_u8; 500];
                 match stream.read(&mut data) {
@@ -57,10 +62,10 @@ impl ButlerCliApp {
         args
     }
 
-    fn process_args(&self, args: CLIArgs) -> String {
+    fn process_args(&self, args: CLIArgs) -> Option<Box<dyn Command>> {
         match &args.command[..] {
-            "version" => "version".to_owned(),
-            _ => "wrong command".to_owned(),
+            "version" => Some(Box::new(Version)),
+            _ => None,
         }
     }
 }

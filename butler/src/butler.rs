@@ -12,12 +12,14 @@ pub struct ButlerApp {
     addr: SocketAddrV4,
 }
 
+const VERSION: Option<&str> = option_env!("CARGO_PKG_VERSION");
+
 impl ServantApp for ButlerApp {
     fn new(addr: SocketAddrV4) -> Self {
         ButlerApp { addr }
     }
 
-    fn run(&self) -> ServantResult<()> {
+    fn run(&mut self) -> ServantResult<()> {
         let listener = TcpListener::bind(self.addr)?;
 
         println!("Butler listening on port {}", self.addr.port());
@@ -47,9 +49,8 @@ fn handle_client(mut stream: TcpStream) -> ServantResult<()> {
             if size > 0 {
                 println!("Received: '{}'", str::from_utf8(&data[0..size]).unwrap());
                 let data = str::from_utf8(&data[0..size]).unwrap();
-                let message =
-                if data == "version" {
-                    "1.0"
+                let message = if data == "version" {
+                    VERSION.unwrap()
                 } else {
                     data
                 };

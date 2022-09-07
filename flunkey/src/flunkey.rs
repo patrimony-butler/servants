@@ -16,7 +16,7 @@ impl ServantApp for FlunkeyApp {
         FlunkeyApp { addr }
     }
 
-    fn run(&self) -> ServantResult<()> {
+    fn run(&mut self) -> ServantResult<()> {
         match TcpStream::connect(self.addr) {
             Ok(mut stream) => {
                 println!(
